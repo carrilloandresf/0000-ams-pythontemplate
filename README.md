@@ -28,12 +28,25 @@ make down
 ```
 
 ### Ejecución local sin Docker
-Instala dependencias y ejecuta Uvicorn:
+Se recomienda usar un entorno virtual (por ejemplo `python -m venv .venv`) para aislar dependencias. En macOS con Python 3 preinstalado:
 ```bash
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
+```
+
+Luego ejecuta Uvicorn:
+```bash
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 Asegúrate de tener MySQL corriendo y que `DATABASE_URL` apunte a tu instancia.
+
+### Ajustes y nuevas funcionalidades
+- Variables de entorno: modifica `.env` para apuntar a bases de datos o puertos distintos.
+- Dependencias: agrega nuevos paquetes en `requirements.txt` y reconstruye los contenedores con `make up` o reinstala en tu entorno virtual.
+- Routers y esquemas: crea módulos en `app/routers` y modelos/esquemas en `app/models.py` y `app/schemas.py` para nuevas rutas.
+- Utilidades: reutiliza/añade funciones en `app/utils.py` para lógica compartida.
+- Migraciones manuales: si cambias el esquema, actualiza `mysql/initdb/init_db.sql` o ejecuta scripts manuales en tu base de datos.
 
 ## Endpoints principales
 Todos los endpoints están bajo el prefijo `/api`.
