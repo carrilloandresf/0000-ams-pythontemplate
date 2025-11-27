@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy import func, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -34,8 +35,19 @@ def create_user(payload: schemas.UserCreate, db: Session = Depends(get_db)):
     return user
 
 
+@router.get("/count", response_model=schemas.UserCount)
+def user_count(db: Session = Depends(get_db)):
+    total = db.scalar(select(func.count()).select_from(User)) or 0
+    return {"total_users": total}
+
+
 @router.get("/{user_id}", response_model=schemas.UserRead)
 def get_user(user_id: int, db: Session = Depends(get_db)):
+    return _get_user_or_404(db, user_id)
+
+
+@router.get("/{user_id}/stats", response_model=schemas.UserRead)
+def user_stats(user_id: int, db: Session = Depends(get_db)):
     return _get_user_or_404(db, user_id)
 
 

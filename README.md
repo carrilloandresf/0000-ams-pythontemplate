@@ -1,6 +1,6 @@
 # API REST con FastAPI y MySQL
 
-Proyecto de ejemplo que implementa una API REST con FastAPI y MySQL, pensada para ser levantada rápidamente en contenedores Docker. Incluye endpoints de cálculo, procesamiento de texto, CRUD de usuarios, procedimientos almacenados y health check.
+Proyecto de ejemplo que implementa una API REST con FastAPI y MySQL, pensada para ser levantada rápidamente en contenedores Docker. Incluye endpoints de cálculo, procesamiento de texto, CRUD de usuarios, estadísticas básicas calculadas con SQLAlchemy y health check.
 
 ## Requisitos
 - Docker y Docker Compose
@@ -20,7 +20,7 @@ make up
 ```
 Esto construye las imágenes y levanta dos contenedores:
 - `api`: aplicación FastAPI expuesta en el puerto 8000.
-- `db`: MySQL 8 con inicialización automática (tabla `users` y procedimientos `user_count` y `user_stats`).
+- `db`: MySQL 8 con inicialización automática (tabla `users`).
 
 Para apagar los servicios:
 ```bash
@@ -67,9 +67,9 @@ Todos los endpoints están bajo el prefijo `/api`.
 - `PUT /api/users/{id}` – Actualizar
 - `DELETE /api/users/{id}` – Eliminar
 
-### Estadísticas (Procedimientos almacenados)
-- `GET /api/stats/user-count`
-- `GET /api/stats/user-stats/{id}`
+### Estadísticas sencillas
+- `GET /api/users/count`
+- `GET /api/users/{id}/stats`
 
 ### Health Check
 - `GET /api/health`
@@ -80,8 +80,7 @@ app/
 ├── database.py        # Conexión a MySQL y sesión de SQLAlchemy
 ├── main.py            # Instancia de FastAPI y registro de routers
 ├── models.py          # Modelos ORM
-├── routers/           # Routers organizados por dominio
-│   ├── stats.py
+├── routers/          # Routers organizados por dominio
 │   ├── users.py
 │   └── utility.py
 ├── schemas.py         # Esquemas Pydantic
@@ -91,6 +90,6 @@ mysql/
 ```
 
 ## Notas adicionales
-- El script `mysql/initdb/init_db.sql` crea la base `app_db`, la tabla `users` y define los procedimientos `user_count` y `user_stats`.
+- El script `mysql/initdb/init_db.sql` crea la base `app_db` y la tabla `users`.
 - El proyecto usa `SQLAlchemy` con el driver `pymysql` (cadena de conexión `mysql+pymysql://...`).
 - La documentación interactiva de la API estará disponible en `http://localhost:8000/docs` cuando el servicio esté corriendo.
