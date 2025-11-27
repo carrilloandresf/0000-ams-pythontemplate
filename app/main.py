@@ -3,7 +3,7 @@ from fastapi import FastAPI
 
 from app.database import engine
 from app.models import Base
-from app.routers import stats, users, utility
+from app.routers import users, utility
 
 load_dotenv()
 
@@ -17,4 +17,3 @@ app = FastAPI(
 
 app.include_router(utility.router)
 app.include_router(users.router)
-app.include_router(stats.router)

@@ -22,6 +22,10 @@ class UserRead(UserBase):
         from_attributes = True
 
 
+class UserCount(BaseModel):
+    total_users: int
+
+
 class ExpressionResult(BaseModel):
     expression: str
     result: float
