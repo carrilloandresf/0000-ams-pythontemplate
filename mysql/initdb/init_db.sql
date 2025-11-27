@@ -1,0 +1,24 @@
+CREATE DATABASE IF NOT EXISTS app_db;
+USE app_db;
+
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(120) NOT NULL UNIQUE
+);
+
+DROP PROCEDURE IF EXISTS user_count;
+DELIMITER $$
+CREATE PROCEDURE user_count()
+BEGIN
+    SELECT COUNT(*) AS total_users FROM users;
+END $$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS user_stats;
+DELIMITER $$
+CREATE PROCEDURE user_stats(IN user_id INT)
+BEGIN
+    SELECT id, name, email FROM users WHERE id = user_id;
+END $$
+DELIMITER ;
